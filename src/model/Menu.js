@@ -29,13 +29,13 @@ class Menu {
     return MENU_PRICE[this.#name] * this.#count;
   }
   // 메뉴 클래스 리턴
-  isDessert(menu) {
-    if ((menu === 0) || (menu === 1) || (menu === 2)) return true;
+  isDessert() {
+    if ((this.#name === 0) || (this.#name === 1) || (this.#name === 2)) return true;
     return false;
   }
 
-  isMain(menu) {
-    if ((menu === 3) || (menu === 4) || (menu === 5) || (menu === 6)) return true;
+  isMain() {
+    if ((this.#name === 3) || (this.#name === 4) || (this.#name === 5) || (this.#name === 6)) return true;
     return false;
   }
 }

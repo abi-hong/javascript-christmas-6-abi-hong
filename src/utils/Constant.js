@@ -37,3 +37,12 @@ export const MENU_PRICE = {
   10: 60000, //'레드와인' : 60000,
   11: 25000, //'샴페인': 25000,
 }
+
+export const SPECIALDAY = [
+  3, 
+  10,
+  17,
+  24,
+  25,
+  31
+]

@@ -12,9 +12,23 @@ class Order {
     const orderDate = await this.#handleInput(InputView.visitDate, Validator.checkDate);
     const menuList = await this.#handleInput(InputView.orderMenu, Validator.checkMenu);
     const menus = this.#getOrderMenu(menuList);
-    console.log('menus', menus);
+    const totalPrice = Calculate.beforeDiscountPrice(menus);
+    if (totalPrice < 10000) {
+      // 총주문 금액 10,000원 이상부터 이벤트가 적용됩니다.
+    } else {
+      const christmasDiscount = Calculate.christamDiscount(orderDate);
+      const weekdayDiscount = Calculate.weekdayDiscount(orderDate, menus);
+      const weekendDiscount = Calculate.weekendDiscount(orderDate, menus);
+    
+    }
+    
     OutputView.menu(this.#orderList);
-    Calculate.beforeDiscountPrice(menus);
+    OutputView.moneyInfo('할인 전 총주문 금액', totalPrice);
+    if (Calculate.isFreeGift(totalPrice)) {
+      OutputView.eventInfo('증정 메뉴', '샴페인 1개');
+    } else {
+      OutputView.eventInfo('증정 메뉴', '없음');
+    }
   }
   
   async #handleInput(inputView, validator) {
@@ -26,14 +40,7 @@ class Order {
   #getOrderMenu(menuList) {
     menuList.forEach((menu) => this.#orderList.push(menu.split('-')));
     const menus = Array.from(this.#orderList, (order) => (new Menu(order[0], order[1])));
-    //const menus = this.#orderList.map((order) => (new Menu(order[0], order[1])));
     menus.forEach((menu) => menu.checkMenu());
-    console.log('menus~', menus);
-    menus.forEach((menu) => {
-      console.log('menu^^', menu);
-      console.log('name', menu.getName());
-      console.log('count', menu.getCount());
-    })
     return menus;
   }
 }

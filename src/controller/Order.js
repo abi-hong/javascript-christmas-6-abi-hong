@@ -13,13 +13,11 @@ class Order {
     const menuList = await this.#handleInput(InputView.orderMenu, Validator.checkMenu);
     const menus = this.#getOrderMenu(menuList);
     const totalPrice = Calculate.beforeDiscountPrice(menus);
+    const freeGift = Calculate.isFreeGift(totalPrice);
     if (totalPrice < 10000) {
       // 총주문 금액 10,000원 이상부터 이벤트가 적용됩니다.
     } else {
-      const christmasDiscount = Calculate.christamDiscount(orderDate);
-      const weekdayDiscount = Calculate.weekdayDiscount(orderDate, menus);
-      const weekendDiscount = Calculate.weekendDiscount(orderDate, menus);
-    
+
     }
     
     OutputView.menu(this.#orderList);
@@ -42,6 +40,22 @@ class Order {
     const menus = Array.from(this.#orderList, (order) => (new Menu(order[0], order[1])));
     menus.forEach((menu) => menu.checkMenu());
     return menus;
+  }
+
+  #calculateDiscount(orderDate, menus) {
+    const christmasDiscount = Calculate.christamDiscount(orderDate);
+    const weekdayDiscount = Calculate.weekdayDiscount(orderDate, menus);
+    const weekendDiscount = Calculate.weekendDiscount(orderDate, menus);
+    const specialDiscount = Calculate.specialDiscount(orderDate);
+    const discountTotal = christmasDiscount + weekdayDiscount + weekendDiscount + specialDiscount;
+    return discountTotal;
+  }
+
+  #calculatePrice(discountTotal, freeGift, totalPrice) {
+    const totalBenefit = Calculate.totalBenefit(discountTotal, freeGift);
+    const eventBadge = Calculate.eventBadge(totalBenefit);
+    const expectPayment = Calculate.expectPayment(totalPrice, discountTotal);
+    
   }
 }
 

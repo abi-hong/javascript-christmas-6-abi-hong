@@ -4,7 +4,7 @@ class App {
   order = new Order();
   
   async run() {
-    this.order.start();
+    await this.order.start();
   }
 }
 

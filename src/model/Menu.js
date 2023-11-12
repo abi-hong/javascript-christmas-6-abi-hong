@@ -30,13 +30,12 @@ class Menu {
   }
   // 메뉴 클래스 리턴
   isDessert() {
-    if ((this.#name === 0) || (this.#name === 1) || (this.#name === 2)) return true;
-    return false;
+    if ((this.#name === 7) || (this.#name === 8)) return this.#count;
+    return 0;
   }
-
   isMain() {
-    if ((this.#name === 3) || (this.#name === 4) || (this.#name === 5) || (this.#name === 6)) return true;
-    return false;
+    if ((this.#name === 3) || (this.#name === 4) || (this.#name === 5) || (this.#name === 6)) return this.#count;
+    return 0;
   }
 }
 

@@ -1,4 +1,5 @@
-import { SPECIALDAY } from '../utils/Constant.js';
+import Calendar from '../utils/Calendar.js';
+import { BADGE, SPECIALDAY } from '../utils/Constant.js';
 
 const Calculate = {
   // 할인 전 총주문 금액 계산 로직
@@ -16,19 +17,17 @@ const Calculate = {
 
   // 크리스마스 디데이 할인 계산 로직
   christamDiscount(number) {
-    const orderDate = new Date(`2023-12-${number}`);
-    const dateNumber = orderDate.getDate();
-    if (dateNumber >= 1 && dateNumber <= 25) {
-      return 1000 + 100 * (dateNumber - 1);
+    const orderDate = Calendar.numberDate(number);
+    if (orderDate >= 1 && orderDate <= 25) {
+      return 1000 + 100 * (orderDate - 1);
     } 
     return 0;
   },
 
   // 평일 할인(일~목 => 0,1,2,3,4) 계산 로직
   weekdayDiscount(number, menus) {
-    const orderDate = new Date(`2023-12-${number}`);
-    const dateNumber = orderDate.getDay();
-    if (dateNumber >= 0 && dateNumber <= 4) {
+    const orderDay = Calendar.numberDay(number);
+    if (orderDay >= 0 && orderDay <= 4) {
       const dessertCount = menus.reduce((prev, menu) => {
         if (menu.isDessert())
           return prev + menu.isDessert();
@@ -40,9 +39,8 @@ const Calculate = {
   }, 
   // 주말 할인(금, 토 => 5,6) 계산 로직
   weekendDiscount(number, menus) {
-    const orderDate = new Date(`2023-12-${number}`);
-    const dateNumber = orderDate.getDay();
-    if (dateNumber === 5 || dateNumber === 6) {
+    const orderDay = Calendar.numberDay(number);
+    if (orderDay === 5 || orderDay === 6) {
       const mainCount = menus.reduce((prev, menu) => {
         if (menu.isMain())
           return prev + menu.isMain();
@@ -55,9 +53,8 @@ const Calculate = {
 
   // 특별 할인 계산 → 로직이벤트 달력에 별이 있으면 총주문 금액에서 1,000원 할인
   specialDiscount(number) {
-    const orderDate = new Date(`2023-12-${number}`);
-    const dateNumber = orderDate.getDate();
-    if (SPECIALDAY.includes(dateNumber)) return 1000;
+    const orderDate = Calendar.numberDate(number);
+    if (SPECIALDAY.includes(orderDate)) return 1000;
     return 0;
   },
 
@@ -69,10 +66,10 @@ const Calculate = {
 
    // 이벤트 배지 계산 로직 → 총혜택 금액에 따라 다른 이벤트 배지
    eventBadge(totalBenefit) {
-    if (totalBenefit >= 20000) return '산타';
-    else if (totalBenefit >= 10000) return '트리';
-    else if (totalBenefit >= 5000) return '별';
-    return '없음';
+    if (totalBenefit >= 20000) return BADGE.santa;
+    else if (totalBenefit >= 10000) return BADGE.tree;
+    else if (totalBenefit >= 5000) return BADGE.star;
+    return BADGE.none;
    },
 
    // 할인 후 예상 결제 금액 계산 로직 → 할인 후 예상 결제 금액 = 할인 전 총주문 금액 - 할인 금액

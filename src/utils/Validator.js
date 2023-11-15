@@ -8,6 +8,7 @@ const Validator = {
     Console.print(EXCEPTION.day);
     return false;
   },
+  
   checkMenuName(nameList) {
     for (let i = 0; i < nameList.length; i++) {
       if (!MENU_LIST.includes(nameList[i])) {
@@ -17,6 +18,7 @@ const Validator = {
     }
     return true;
   },
+
   checkMenuCount(countList) {
     for (let i = 0; i < countList.length; i++) {
       if (/^[1-9]\d*$/.test(countList[i])) return true;
@@ -24,12 +26,14 @@ const Validator = {
     Console.print(EXCEPTION.order);
     return false;
   },
+
   checkNotDuplicateMenu(nameList) {
     const isNotDuplicate = nameList.filter((name, index) => nameList.indexOf(name) !== index);
     if (isNotDuplicate.length === 0) return true;
     Console.print(EXCEPTION.order);
     return false;
   },
+
   checkTotalMenuCount(nameList, countList) {
     let dessertCount = 0;
     const totalCount = countList.reduce((prev, count) => { 
